@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:flowable="http://flowable.org/bpmn"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.flowable.org/processdef">
+
+    <process id="etaluma-challenge" name="Multiplier" isExecutable="true">
+
+        <startEvent id="startEvent"/>
+
+        <!--<sequenceFlow sourceRef="startEvent" targetRef="enterProperty"/>-->
+        <sequenceFlow sourceRef="startEvent" targetRef="ReadFile"/>
+
+        <serviceTask id="ReadFile" flowable:class="com.etaluma.FileReader"/>
+        <sequenceFlow sourceRef="ReadFile" targetRef="enterProperty"/>
+
+        <userTask id="enterProperty" name="Enter the name of one of the 2 properties"
+                  flowable:candidateGroups="user"/>
+        <sequenceFlow sourceRef="enterProperty" targetRef="enterMultiplier"/>
+
+        <userTask id="enterMultiplier" name="Enter a multiplier value between 2 and 10"
+                  flowable:candidateGroups="user"/>
+        <sequenceFlow sourceRef="enterMultiplier" targetRef="cancelProcess"/>
+        <!--<sequenceFlow sourceRef="enterMultiplier" targetRef="Multiplier"/>-->
+
+        <boundaryEvent id="cancelProcess" cancelActivity="true" attachedToRef="Decision1">
+            <timerEventDefinition>
+                <timeDuration>T10S</timeDuration>
+            </timerEventDefinition>
+        </boundaryEvent>
+
+        <userTask id="enterStop" flowable:candidateGroups="user"/>
+        
+        <exclusiveGateway id="Decision1"/>
+
+        <sequenceFlow sourceRef="Decision1" targetRef="ProcessStopped">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[
+                    ${ Stop }
+                ]]>
+            </conditionExpression>
+        </sequenceFlow>
+
+        <sequenceFlow sourceRef="Decision1" targetRef="CheckKnownCustomer">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[
+                    ${ !Stop }
+                ]]>
+            </conditionExpression>
+        </sequenceFlow>
+
+        <serviceTask id="Multiplier" flowable:class="com.etaluma.Multiplier"/>
+        <sequenceFlow sourceRef="Multiplier" targetRef="ProcessCompleted"/>
+
+        <serviceTask id="ProcessCompleted" flowable:class="com.etaluma.ResultLogger"/>
+        <sequenceFlow sourceRef="ProcessCompleted" targetRef="end"/>
+
+        <!--<serviceTask id="ProcessStopped" flowable:class="com.etaluma.ProcessStopper"/>-->
+        <!--<sequenceFlow sourceRef="ProcessStopped" targetRef="end"/>-->
+
+        <endEvent id="end"/>
+
+    </process>
+
+</definitions>

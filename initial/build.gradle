@@ -20,6 +20,12 @@ bootJar {
 
 repositories {
     mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'org.flowable:flowable-engine:6.4.0'
+    compile 'com.h2database:h2:1.3.176'
 }
 
 sourceCompatibility = 1.8
