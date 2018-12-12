@@ -28,17 +28,18 @@
         <userTask id="enterMultiplier" name="Enter a multiplier value between 2 and 10"
                   flowable:candidateGroups="user"/>
         <sequenceFlow sourceRef="enterMultiplier" targetRef="enterStop"/>
-        <!--<sequenceFlow sourceRef="enterMultiplier" targetRef="Multiplier"/>-->
+        <!--<sequenceFlow sourceRef="enterMultiplier" targetRef="cancelProcess"/>-->
+
+
+        <userTask id="enterStop" name="Enter stop to cancel the process, otherwise click enter"
+                  flowable:candidateGroups="user"/>
+        <sequenceFlow sourceRef="enterStop" targetRef="Decision1"/>
 
         <!--<boundaryEvent id="cancelProcess" cancelActivity="true" attachedToRef="enterStop">-->
             <!--<timerEventDefinition>-->
                 <!--<timeDuration>PT10S</timeDuration>-->
             <!--</timerEventDefinition>-->
         <!--</boundaryEvent>-->
-
-        <userTask id="enterStop" name="Enter stop to cancel the process, otherwise click enter"
-                  flowable:candidateGroups="user"/>
-        <sequenceFlow sourceRef="enterStop" targetRef="Decision1"/>
 
         <exclusiveGateway id="Decision1"/>
 

@@ -9,6 +9,7 @@ import org.flowable.task.api.Task;
 import org.flowable.engine.TaskService;
 
 import org.flowable.engine.ProcessEngine;
+import org.flowable.engine.ProcessEngines;
 import org.flowable.engine.ProcessEngineConfiguration;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
@@ -46,6 +47,8 @@ public class FlowableRunner {
                         .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
 
                 ProcessEngine processEngine = cfg.buildProcessEngine();
+
+//                ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 
                 //Deploy process definition
                 RepositoryService repositoryService = processEngine.getRepositoryService();
