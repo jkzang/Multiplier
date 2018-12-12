@@ -7,7 +7,7 @@ public class ResultLogger implements JavaDelegate {
 
     public void execute(DelegateExecution execution) {
         String result = execution.getVariable("result").toString();
-        System.out.println( "Calulation yielded the following result: " + result );
+        System.out.println( "\nCalulation yielded the following result: " + result );
     }
 
 }

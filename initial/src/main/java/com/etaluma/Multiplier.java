@@ -18,13 +18,7 @@ public class Multiplier implements JavaDelegate {
 
         String chosenPropertyValues = execution.getVariable(chosenProperty).toString();
 
-        System.out.println(chosenProperty); System.out.println(chosenProperty instanceof String );
-        System.out.println(chosenPropertyValues); System.out.println(chosenPropertyValues instanceof String );
-        System.out.println(multiplier); System.out.println(multiplier instanceof Integer );
-
         List<String> list = Arrays.asList(chosenPropertyValues.split(","));
-
-        System.out.println(list);
 
         Integer sum = list.stream()
                 .map( i -> Integer.parseInt(i) * multiplier )

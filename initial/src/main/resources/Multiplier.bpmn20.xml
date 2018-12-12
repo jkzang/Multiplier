@@ -27,31 +27,33 @@
 
         <userTask id="enterMultiplier" name="Enter a multiplier value between 2 and 10"
                   flowable:candidateGroups="user"/>
-        <sequenceFlow sourceRef="enterMultiplier" targetRef="cancelProcess"/>
+        <sequenceFlow sourceRef="enterMultiplier" targetRef="enterStop"/>
         <!--<sequenceFlow sourceRef="enterMultiplier" targetRef="Multiplier"/>-->
 
-        <boundaryEvent id="cancelProcess" cancelActivity="true" attachedToRef="Decision1">
-            <timerEventDefinition>
-                <timeDuration>T10S</timeDuration>
-            </timerEventDefinition>
-        </boundaryEvent>
+        <!--<boundaryEvent id="cancelProcess" cancelActivity="true" attachedToRef="enterStop">-->
+            <!--<timerEventDefinition>-->
+                <!--<timeDuration>PT10S</timeDuration>-->
+            <!--</timerEventDefinition>-->
+        <!--</boundaryEvent>-->
 
-        <userTask id="enterStop" flowable:candidateGroups="user"/>
-        
+        <userTask id="enterStop" name="Enter stop to cancel the process, otherwise click enter"
+                  flowable:candidateGroups="user"/>
+        <sequenceFlow sourceRef="enterStop" targetRef="Decision1"/>
+
         <exclusiveGateway id="Decision1"/>
 
         <sequenceFlow sourceRef="Decision1" targetRef="ProcessStopped">
             <conditionExpression xsi:type="tFormalExpression">
                 <![CDATA[
-                    ${ Stop }
+                    ${ stop }
                 ]]>
             </conditionExpression>
         </sequenceFlow>
 
-        <sequenceFlow sourceRef="Decision1" targetRef="CheckKnownCustomer">
+        <sequenceFlow sourceRef="Decision1" targetRef="Multiplier">
             <conditionExpression xsi:type="tFormalExpression">
                 <![CDATA[
-                    ${ !Stop }
+                    ${ !stop }
                 ]]>
             </conditionExpression>
         </sequenceFlow>
@@ -62,8 +64,8 @@
         <serviceTask id="ProcessCompleted" flowable:class="com.etaluma.ResultLogger"/>
         <sequenceFlow sourceRef="ProcessCompleted" targetRef="end"/>
 
-        <!--<serviceTask id="ProcessStopped" flowable:class="com.etaluma.ProcessStopper"/>-->
-        <!--<sequenceFlow sourceRef="ProcessStopped" targetRef="end"/>-->
+        <serviceTask id="ProcessStopped" flowable:class="com.etaluma.StopLogger"/>
+        <sequenceFlow sourceRef="ProcessStopped" targetRef="end"/>
 
         <endEvent id="end"/>
 

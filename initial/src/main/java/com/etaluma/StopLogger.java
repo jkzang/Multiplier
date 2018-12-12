@@ -6,7 +6,7 @@ import org.flowable.engine.delegate.JavaDelegate;
 public class StopLogger implements JavaDelegate {
 
     public void execute(DelegateExecution execution) {
-        System.out.println("processed stopped by user");
+        System.out.println("\nprocessed stopped by user");
     }
 
 }

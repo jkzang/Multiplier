@@ -95,6 +95,7 @@ public class FlowableRunner {
                 //Third User Task
                 List<Task> thirdTaskList = taskService.createTaskQuery().taskCandidateGroup("user").list();
                 Task thirdTask = thirdTaskList.get(0);
+                System.out.println(thirdTask.getName());
 
                 Boolean stop = scanner.nextLine().toLowerCase().equals("stop");
 
